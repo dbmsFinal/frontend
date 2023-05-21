@@ -1,0 +1,189 @@
+<template>
+  <div class="app-container">
+    <div class="topbar" :style="{ height: topbarHeight + 'px' }">
+      <div class="topbar-text">VoteSystem</div>
+    </div>
+    <div class="top-section">
+      <el-button class="fixed-button" type="info">Hello {{ this.username }}</el-button>
+    </div>
+    <div class="banner">
+      <div class="banner-text">
+        <h1>"Don't let your opinion be buried in silence."</h1>
+      </div>
+    </div>
+    <div v-for="(post, index) in posts" :key="index">
+      <el-card class="card" @click="turnToArticlePage(post.title)">
+        <div class="card-content">
+          <a class="card-title">{{ post.title }}</a>
+          <div class="card-author">By {{ post.initiator }}</div>
+        </div>
+      </el-card>
+    </div>
+  </div>
+</template>
+
+<script>
+import { reactive, ref } from "vue";
+import router from "../router";
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      topbarHeight: 60, // 初始高度為 400px
+      maxScroll: 50, // 滾動到多少距離後改變高度
+      posts: [],
+      token: localStorage.getItem("token"),
+      username: "",
+    };
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+    axios
+      .get("http://127.0.0.1:3000/index/showPost")
+      .then((response) => {
+        this.posts = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        authorization: this.token,
+      },
+    };
+    axios
+      .get("http://127.0.0.1:3000/user/decode", config)
+      .then((response) => {
+        console.log(response.data);
+        if (response.status == 200) {
+          this.username = response.data.username;
+        }
+      })
+      .catch((error) => {
+        console.log(url);
+        this.error.message = error.message;
+        console.log(error);
+      });
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
+  methods: {
+    turnToArticlePage(postTitle) {
+      console.log(postTitle);
+      const title = postTitle;
+      router.push({
+        name: "article",
+        params: { title: title },
+      });
+    },
+  },
+};
+</script>
+<style scoped>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  position: relative;
+}
+.banner {
+  background-image: url(https://i.imgur.com/afHtVRj.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 400px;
+  margin-top: -300px;
+  transform: scale(1.5);
+}
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  color: rgb(117, 113, 113);
+  text-align: center;
+}
+.topbar {
+  background-color: rgba(157, 149, 149, 0.5);
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  transition: height 0.3s ease-out;
+}
+
+.topbar-hidden {
+  height: 0;
+}
+
+.top-section {
+  height: calc(50vh - 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 50px;
+}
+
+.topbar-text {
+  position: absolute;
+  font-weight: bold;
+  font-family: PoorRichard;
+  top: 50%;
+  left: 10%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  color: rgb(0, 0, 0);
+  text-align: left;
+}
+
+.fixed-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.card {
+  margin: 10 auto;
+  width: 1100px;
+  height: 200px;
+  margin: 50px;
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+.card-title:hover {
+  text-decoration: underline;
+}
+
+.card-author {
+  font-size: 16px;
+  color: #999;
+}
+
+.readmore-link {
+  font-size: 14px;
+  text-decoration: none;
+  color: blue;
+}
+</style>
