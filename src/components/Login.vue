@@ -2,10 +2,6 @@
   <div class="cards-container">
     <el-card>
       <h1>Login</h1>
-      <img
-        class="logo"
-        src="https://attach.setn.com/newsimages/2023/04/05/4107807-PH.jpg"
-      />
       <el-form
         ref="ruleFormRef"
         :model="form"
@@ -14,8 +10,8 @@
         :rules="rules"
         status-icon
       >
-        <el-form-item label="username" prop="username">
-          <el-input id="username" v-model="form.username"></el-input>
+        <el-form-item label="email" prop="email">
+          <el-input id="email" v-model="form.email"></el-input>
         </el-form-item>
         <el-form-item label="password" prop="password" label-position="top">
           <el-input
@@ -53,7 +49,7 @@ export default {
   data() {
     return {
       form: {
-        username: "",
+        email: "",
         password: "",
       },
 
@@ -61,10 +57,10 @@ export default {
 
       error: { message: "" },
       rules: {
-        username: [
+        email: [
           {
             required: true,
-            message: "Please input your username",
+            message: "Please input your email",
             trigger: "blur",
           },
         ],
@@ -91,9 +87,9 @@ export default {
         });
     },
     async submitForm() {
-      const url = "http://127.0.0.1:3000/user/login";
+      const url = "http://127.0.0.1:3000/login";
       const data = {
-        username: this.form.username,
+        email: this.form.email,
         password: this.form.password,
       };
       const config = {
