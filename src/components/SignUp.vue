@@ -106,7 +106,7 @@ export default {
         });
     },
     async submitForm() {
-      const url = "http://127.0.0.1:3000/user/register";
+      const url = "http://127.0.0.1:3000/register";
       const data = {
         username: this.ruleForm.name,
         email: this.ruleForm.email,
