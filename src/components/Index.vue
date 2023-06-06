@@ -15,7 +15,7 @@
       <el-card class="card" @click="turnToArticlePage(post.title)">
         <div class="card-content">
           <a class="card-title">{{ post.title }}</a>
-          <div class="card-author">By {{ post.initiator }}</div>
+          <div class="card-author">By {{ post.creator_id}}</div>
         </div>
       </el-card>
     </div>
@@ -40,9 +40,13 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
     axios
-      .get("http://127.0.0.1:3000/index/showPost")
+      .get("http://127.0.0.1:3000/polls")
       .then((response) => {
-        this.posts = response.data;
+        let completed_polls_arr = response.data.message.completed_polls;
+        let ongoing_polls_arr = response.data.message.ongoing_polls;
+        this.posts = ongoing_polls_arr.concat(completed_polls_arr);
+        
+        console.log(response.data.message);
       })
       .catch((error) => {
         console.log(error);
@@ -53,19 +57,6 @@ export default {
         authorization: this.token,
       },
     };
-    axios
-      .get("http://127.0.0.1:3000/user/decode", config)
-      .then((response) => {
-        console.log(response.data);
-        if (response.status == 200) {
-          this.username = response.data.username;
-        }
-      })
-      .catch((error) => {
-        console.log(url);
-        this.error.message = error.message;
-        console.log(error);
-      });
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.handleScroll);
