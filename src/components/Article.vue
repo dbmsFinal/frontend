@@ -33,21 +33,21 @@ export default {
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const url = "http://127.0.0.1:3000/index/showArticleByTitle";
-      const title = vm.$route.params.title;
-
-      const data = {
-        title: title,
-      };
+      let url = "http://127.0.0.1:3000/polls/";
+      const postid = vm.$route.params.postid;
+      console.log(postid);
+      url = url + postid;
       const config = {
         headers: {
           "Content-Type": "application/json",
         },
       };
       axios
-        .post(url, data, config)
+        .get(url, config)
         .then((response) => {
+          console.log(response.data)
           vm.post = response.data;
+          
         })
         .catch((error) => {
           console.log(error);
@@ -61,20 +61,20 @@ export default {
         authorization: this.token,
       },
     };
-    axios
-      .get("http://127.0.0.1:3000/user/decode", config)
-      .then((response) => {
-        console.log(response.data);
-        if (response.status == 200) {
-          this.votedPosts = response.data.votedPosts;
-          this.username = response.data.username;
-        }
-      })
-      .catch((error) => {
-        console.log(url);
-        this.error.message = error.message;
-        console.log(error);
-      });
+    // axios
+    //   .get("http://127.0.0.1:3000/user/decode", config)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     if (response.status == 200) {
+    //       this.votedPosts = response.data.votedPosts;
+    //       this.username = response.data.username;
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(url);
+    //     this.error.message = error.message;
+    //     console.log(error);
+    //   });
     
   },
   methods: {
