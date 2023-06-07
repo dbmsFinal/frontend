@@ -12,7 +12,7 @@
       </div>
     </div>
     <div v-for="(post, index) in posts" :key="index">
-      <el-card class="card" @click="turnToArticlePage(post.title)">
+      <el-card class="card" @click="turnToArticlePage(post.poll_id)">
         <div class="card-content">
           <a class="card-title">{{ post.title }}</a>
           <div class="card-author">By {{ post.creator_id}}</div>
@@ -62,12 +62,10 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
-    turnToArticlePage(postTitle) {
-      console.log(postTitle);
-      const title = postTitle;
+    turnToArticlePage(postid) {
       router.push({
-        name: "article",
-        params: { title: title },
+        name: "Article",
+        params: { postid: postid },
       });
     },
   },
