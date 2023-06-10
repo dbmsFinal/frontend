@@ -1,9 +1,10 @@
 <template>
-  <div class="article-container">
+
+  <div   v-for="(post, index) in posts" :key="index" class="article-container">
     <el-card class="box-card">
-      <div class="article-title">{{ post.title || "" }}</div>
-      <div class="article-author">By {{ post.initiator || "" }}</div>
-      <div class="article-content">{{ post.article || "" }}</div>
+      <div class="article-title">{{ "question_id:"+post.question_id || "" }}</div>
+      <!-- <div class="article-author">By {{ post.initiator || "" }}</div> -->
+      <div class="article-content">{{ post.text || "" }}</div>
       <div class="article-buttons">
         <el-button type="primary" icon="el-icon-thumb-up" @click="subitSupport"
           >Support</el-button
@@ -23,7 +24,7 @@ import router from "../router";
 export default {
   data() {
     return {
-      post: {},
+      posts: [],
       token: localStorage.getItem("token"),
       votedPosts: [],
       username: "",
@@ -35,7 +36,6 @@ export default {
     next((vm) => {
       let url = "http://127.0.0.1:3000/polls/";
       const postid = vm.$route.params.postid;
-      console.log(postid);
       url = url + postid;
       const config = {
         headers: {
@@ -45,8 +45,8 @@ export default {
       axios
         .get(url, config)
         .then((response) => {
-          console.log(response.data)
-          vm.post = response.data;
+          console.log(response.data.message.questions)
+          vm.posts = response.data.message.questions;
           
         })
         .catch((error) => {
@@ -60,22 +60,7 @@ export default {
         "Content-Type": "application/json",
         authorization: this.token,
       },
-    };
-    // axios
-    //   .get("http://127.0.0.1:3000/user/decode", config)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     if (response.status == 200) {
-    //       this.votedPosts = response.data.votedPosts;
-    //       this.username = response.data.username;
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(url);
-    //     this.error.message = error.message;
-    //     console.log(error);
-    //   });
-    
+    };    
   },
   methods: {
     async subitSupport() {
