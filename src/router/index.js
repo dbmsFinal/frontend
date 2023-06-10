@@ -61,6 +61,11 @@ const router = createRouter({
 			component: () => import("../components/Article.vue"),
 			props: true,
 		},
+		{
+			path: "/createPoll",
+			name: "createPoll",
+			component: () => import("../components/CreatePoll.vue"),
+		}
 	],
 });
 
