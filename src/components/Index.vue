@@ -4,7 +4,8 @@
       <div class="topbar-text">VoteSystem</div>
     </div>
     <div class="top-section">
-      <el-button class="fixed-button" type="info">Hello {{ this.username }}</el-button>
+      <el-button class="create-button" type="info" @click="turnToCreatePage()">create_poll</el-button>
+      <el-button class="fixed-button" type="info">Hello AAA{{ this.username }}</el-button>
     </div>
     <div class="banner">
       <div class="banner-text">
@@ -68,6 +69,9 @@ export default {
         params: { postid: postid },
       });
     },
+    turnToCreatePage(){
+      router.push("/createPoll")
+    }
   },
 };
 </script>
@@ -145,7 +149,12 @@ body {
   right: 20px;
   z-index: 9999;
 }
-
+.create-button {
+  position: fixed;
+  top: 20px;
+  right: 150px;
+  z-index: 9999;
+}
 .card {
   margin: 10 auto;
   width: 1100px;
