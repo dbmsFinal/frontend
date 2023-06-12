@@ -45,7 +45,6 @@
 import { reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
-
 const formSize = ref("default");
 const ruleFormRef = ref();
 
@@ -70,11 +69,11 @@ const rules = reactive({
       message: "Please input your description",
       trigger: "blur",
     },
-    {
-      type: "email",
-      message: "Please input correct email",
-      trigger: "blur",
-    },
+    // {
+    //   type: "email",
+    //   message: "Please input correct email",
+    //   trigger: "blur",
+    // },
   ],
   question1: [
     {
@@ -116,9 +115,10 @@ const createPoll = function () {
         text:ruleForm.question2
     }
   ];
-  const url = "http://127.0.0.1:3000/create_poll";
+
   const data = {
     title: ruleForm.title,
+    description: ruleForm.description,
     start_date: start_date,
     end_date: end_date,
     questions: questions
@@ -126,10 +126,12 @@ const createPoll = function () {
   const config = {
     headers: {
       "Content-Type": "application/json",
+    
     },
   };
+  console.log(data);
   axios
-    .post(url, data, config)
+    .post("/api/create_poll", data, config)
     .then((response) => {
       console.log(response);
       if (response.status == 201) {
@@ -137,6 +139,7 @@ const createPoll = function () {
       }
     })
     .catch((error) => {
+    
       console.log(error);
     });
 };
