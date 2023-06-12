@@ -99,7 +99,7 @@ export default {
       };
 
       axios
-        .post(url, data, config)
+        .post('/api/login', data, config)
         .then((response) => {
           console.log(response.data);
           if (response.status == 200) {
