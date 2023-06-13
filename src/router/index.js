@@ -65,7 +65,12 @@ const router = createRouter({
 			path: "/createPoll",
 			name: "createPoll",
 			component: () => import("../components/CreatePoll.vue"),
-		}
+		},
+		{
+			path: "/result/:postid",
+			name: "result",
+			component: () => import("../components/pollResult.vue"),
+		},
 	],
 });
 
