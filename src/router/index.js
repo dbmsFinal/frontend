@@ -25,9 +25,9 @@ const router = createRouter({
 			component: () => import("../components/SignUp.vue"),
 		},
 		{
-			path: "/inputInfo",
-			name: "inputInfo",
-			component: () => import("../components/InputInfo.vue"),
+			path: "/userList",
+			name: "userList",
+			component: () => import("../components/UserList.vue"),
 		},
 		{
 			path: "/index",
@@ -39,11 +39,7 @@ const router = createRouter({
 			name: "index_admin",
 			component: () => import("../components/Index_admin.vue"),
 		},
-		{
-			path: "/choosePicture",
-			name: "choosePicture",
-			component: () => import("../components/ChoosePicture.vue"),
-		},
+		
 		{
 			path: "/test",
 			name: "test",

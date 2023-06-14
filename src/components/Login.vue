@@ -29,13 +29,12 @@
             <el-button :key="success" type="success" link @click="goToSignUp"
               >SignUp
             </el-button>
-            
           </div>
           <el-divider></el-divider>
           <h4>You are admin?</h4>
           <el-button :key="success" type="warning" link @click="goToAdmin"
-              >Login as admin
-            </el-button>
+            >Login as admin
+          </el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -103,15 +102,14 @@ export default {
           "Content-Type": "application/json",
         },
       };
-
+      
       axios
-        .post(url , data, config)
+        .post(url, data, config)
         .then((response) => {
           console.log(response.data);
           if (response.status == 200) {
             this.token = response.data.authorization;
-            
-            
+
             router.push("/index");
           }
         })
@@ -136,7 +134,6 @@ export default {
   font-size: 16px;
 }
 .el-card {
-  
   width: 480px;
   height: 440px;
   margin: -250px;
@@ -154,5 +151,4 @@ h1 {
   margin-bottom: 20px;
   text-align: center;
 }
-
 </style>
