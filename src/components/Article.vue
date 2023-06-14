@@ -2,12 +2,12 @@
 <div>
     <div v-for="(post, index) in posts" :key="index" class="article-container">
         <el-card class="box-card">
-            <div class="article-title">{{ "question_id:"+post.question_id || "" }}</div>
+            <div class="article-title">{{ "question"+(index+1) || "" }}</div>
             <!-- <div class="article-author">By {{ post.initiator || "" }}</div> -->
             <div class="article-content">{{ post.text || "" }}</div>
             <div class="article-buttons">
-                <el-button type="primary" icon="el-icon-thumb-up" @click="submitopnion(post.question_id,1)">Support</el-button>
-                <el-button type="danger" icon="el-icon-thumb-down" @click="submitopnion(post.question_id,2)">Oppose</el-button>
+                <el-button type="primary" plain @click="submitopnion(post.question_id,1)">Support</el-button>
+                <el-button type="danger" plain @click="submitopnion(post.question_id,2)">Oppose</el-button>
             </div>
         </el-card>
     </div>

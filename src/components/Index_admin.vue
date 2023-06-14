@@ -15,31 +15,34 @@
     <el-divider></el-divider>
     <el-card class="card-divider">
         <div class="card-content">
+            <label class="card-title-divider">pending poll</label>
+        </div>
+    </el-card>
+    <div v-for="(post, index) in posts" :key="index">
+        <el-card class="card">
+            <div class="card-content">
+                <a class="card-title">{{ post.title }}</a>
+                <div class="card-author">By {{ post.creator_id}}</div>
+            </div>
+            <el-button @click="judge(post.poll_id, 1)" type="success">approve</el-button>
+            <el-button @click="delet(post.poll_id)" type="warning">delete</el-button>
+        </el-card>
+    </div>
+    <el-card class="card-divider">
+        <div class="card-content">
             <label class="card-title-divider">ongoing poll</label>
         </div>
     </el-card>
     <div v-for="(post, index) in onGoingPost" :key="index">
-        <el-card class="card" @click="turnToArticlePage(post.poll_id)">
+        <el-card class="card">
             <div class="card-content">
                 <a class="card-title">{{ post.title }}</a>
                 <div class="card-author">By {{ post.creator_id}}</div>
             </div>
+            <el-button @click="judge(post.poll_id, 0)" type="warning">disappove</el-button>
         </el-card>
     </div>
-    <el-divider></el-divider>
-    <el-card class="card-divider">
-        <div class="card-content">
-            <label class="card-title-divider">completed poll</label>
-        </div>
-    </el-card>
-    <div v-for="(post, index) in completedPost" :key="index">
-        <el-card class="card" @click="turnToResultPage(post.poll_id)">
-            <div class="card-content">
-                <a class="card-title">{{ post.title }}</a>
-                <div class="card-author">By {{ post.creator_id}}</div>
-            </div>
-        </el-card>
-    </div>
+
 </div>
 </template>
 
@@ -56,32 +59,32 @@ export default {
             token: localStorage.getItem("token"),
             username: "",
             onGoingPost: [],
-            completedPost: []
         };
     },
     mounted() {
         window.addEventListener("scroll", this.handleScroll);
         axios
-            .get("http://127.0.0.1:3000/polls/ongoing")
+            .get("http://127.0.0.1:3000/polls/unapproved")
             .then((response) => {
-                // let completed_polls_arr = response.data.message.completed_polls;
-                let ongoing_polls_arr = response.data.message.ongoing_polls;
-                this.onGoingPost = ongoing_polls_arr;
-                // this.completedPost = completed_polls_arr;
 
-                console.log(response.data.message);
+                let unapproved_polls_arr = response.data.message.ongoing_polls;
+
+                this.posts = unapproved_polls_arr
+               
             })
             .catch((error) => {
                 console.log(error);
             });
         axios
-            .get("http://127.0.0.1:3000/polls/completed")
+            .get("http://127.0.0.1:3000/polls/ongoing")
             .then((response) => {
-                let completed_polls_arr = response.data.message.completed_polls;
-                this.completedPost = completed_polls_arr;
 
-                console.log(response.data.message);
-            }).catch((error) => {
+                let ongoing_polls_arr = response.data.message.ongoing_polls;
+
+                this.onGoingPost = ongoing_polls_arr
+               
+            })
+            .catch((error) => {
                 console.log(error);
             });
 
@@ -90,21 +93,68 @@ export default {
         window.removeEventListener("scroll", this.handleScroll);
     },
     methods: {
-        turnToResultPage(postid) {
-            router.push({
-                name: "result",
-                params: {
-                    postid: postid
-                },
-            });
+        judge(poll_id, status) {
+
+            if (status == 1) {
+                const url = "/api/admin/approve_poll"
+                const data = {
+                    poll_id_to_approve: poll_id,
+                }
+                axios
+                    .post(url, data)
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status == 200) {
+
+                            // refresh
+                            router.go(0)
+                            this.$message.error("approve successful");
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            } else if (status == 0) {
+                const url = "/api//admin/disapprove_poll"
+                const data = {
+                    poll_id_to_disapprove: poll_id,
+                }
+                axios
+                    .post(url, data)
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status == 200) {
+
+                            // refresh
+                            router.go(0)
+                            this.$message.error("disapprove successful");
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
+            }
         },
-        turnToArticlePage(postid) {
-            router.push({
-                name: "Article",
-                params: {
-                    postid: postid
-                },
-            });
+        delete(poll_id) {
+            const url = `/api/delete_poll/{poll_id}`
+            const data = {
+                poll_id_to_delete: poll_id,
+            }
+            axios
+                .post(url, data)
+                .then((response) => {
+                    console.log(response)
+                    if (response.status == 200) {
+                        this.$message.error("delete successful");
+                        // refresh
+                        router.go(0)
+                        
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
         turnToCreatePage() {
             router.push("/createPoll")

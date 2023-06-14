@@ -29,7 +29,13 @@
             <el-button :key="success" type="success" link @click="goToSignUp"
               >SignUp
             </el-button>
+            
           </div>
+          <el-divider></el-divider>
+          <h4>You are admin?</h4>
+          <el-button :key="success" type="warning" link @click="goToAdmin"
+              >Login as admin
+            </el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -87,7 +93,7 @@ export default {
         });
     },
     async submitForm() {
-      const url = "http://127.0.0.1:3000/login";
+      const url = "/api/login";
       const data = {
         email: this.form.email,
         password: this.form.password,
@@ -99,12 +105,13 @@ export default {
       };
 
       axios
-        .post('/api/login', data, config)
+        .post(url , data, config)
         .then((response) => {
           console.log(response.data);
           if (response.status == 200) {
             this.token = response.data.authorization;
-            localStorage.setItem("token", this.token);
+            
+            
             router.push("/index");
           }
         })
@@ -116,6 +123,10 @@ export default {
     },
     async goToSignUp() {
       router.push("/signUp");
+    },
+
+    async goToAdmin() {
+      router.push("/admin_login");
     },
   },
 };
