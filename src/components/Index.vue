@@ -62,7 +62,7 @@ export default {
     mounted() {
         window.addEventListener("scroll", this.handleScroll);
         axios
-            .get("http://127.0.0.1:3000/polls/ongoing")
+            .get("/api/polls/ongoing")
             .then((response) => {
                 // let completed_polls_arr = response.data.message.completed_polls;
                 let ongoing_polls_arr = response.data.message.ongoing_polls;
@@ -75,7 +75,7 @@ export default {
                 console.log(error);
             });
         axios
-            .get("http://127.0.0.1:3000/polls/completed")
+            .get("/api/polls/completed")
             .then((response) => {
                 let completed_polls_arr = response.data.message.completed_polls;
                 this.completedPost = completed_polls_arr;

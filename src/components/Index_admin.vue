@@ -21,11 +21,15 @@
     <div v-for="(post, index) in posts" :key="index">
         <el-card class="card">
             <div class="card-content">
-                <a class="card-title">{{ post.title }}</a>
+                <a class="card-title">title:{{ post.title }}</a>
+                <!-- chage row -->
+                <br>
+                <el-text class="mx-1" size="large">description: {{ post.description }}  </el-text>
                 <div class="card-author">By {{ post.creator_id}}</div>
+                
             </div>
             <el-button @click="judge(post.poll_id, 1)" type="success">approve</el-button>
-            <el-button @click="delet(post.poll_id)" type="warning">delete</el-button>
+            <el-button @click="deletee(post.poll_id)" type="warning">delete</el-button>
         </el-card>
     </div>
     <el-card class="card-divider">
@@ -37,6 +41,8 @@
         <el-card class="card">
             <div class="card-content">
                 <a class="card-title">{{ post.title }}</a>
+                <br>
+                <el-text class="mx-1" size="large">description: {{ post.description }}  </el-text>
                 <div class="card-author">By {{ post.creator_id}}</div>
             </div>
             <el-button @click="judge(post.poll_id, 0)" type="warning">disappove</el-button>
@@ -64,11 +70,11 @@ export default {
     mounted() {
         window.addEventListener("scroll", this.handleScroll);
         axios
-            .get("http://127.0.0.1:3000/polls/unapproved")
+            .get("/api/polls/unapproved")
             .then((response) => {
 
                 let unapproved_polls_arr = response.data.message.ongoing_polls;
-
+                console.log(unapproved_polls_arr)
                 this.posts = unapproved_polls_arr
                
             })
@@ -76,7 +82,7 @@ export default {
                 console.log(error);
             });
         axios
-            .get("http://127.0.0.1:3000/polls/ongoing")
+            .get("/api/polls/ongoing")
             .then((response) => {
 
                 let ongoing_polls_arr = response.data.message.ongoing_polls;
@@ -115,7 +121,7 @@ export default {
                         console.log(error);
                     });
             } else if (status == 0) {
-                const url = "/api//admin/disapprove_poll"
+                const url = "/api/admin/disapprove_poll"
                 const data = {
                     poll_id_to_disapprove: poll_id,
                 }
@@ -136,13 +142,11 @@ export default {
 
             }
         },
-        delete(poll_id) {
-            const url = `/api/delete_poll/{poll_id}`
-            const data = {
-                poll_id_to_delete: poll_id,
-            }
+        deletee(poll_id) {
+            const url = `/api/admin/delete_poll/${poll_id}`
+          
             axios
-                .post(url, data)
+                .delete(url)
                 .then((response) => {
                     console.log(response)
                     if (response.status == 200) {

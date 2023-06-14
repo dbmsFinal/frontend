@@ -102,7 +102,7 @@ export default {
 
     beforeRouteEnter(to, from, next) {
         next((vm) => {
-            let url = "http://127.0.0.1:3000/polls/";
+            let url = "/api/polls/";
             const postid = vm.$route.params.postid;
             vm.postid = postid;
             url = url + postid;
