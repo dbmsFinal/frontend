@@ -14,7 +14,11 @@ const router = createRouter({
 			name: "login",
 			component: Login,
 		},
-
+		{
+			path: "/admin_login",
+			name: "admin_login",
+			component: () => import("../components/AdminLogin.vue"),
+		},
 		{
 			path: "/signUp",
 			name: "signUp",
@@ -29,6 +33,11 @@ const router = createRouter({
 			path: "/index",
 			name: "index",
 			component: () => import("../components/Index.vue"),
+		},
+		{
+			path: "/index_admin",
+			name: "index_admin",
+			component: () => import("../components/Index_admin.vue"),
 		},
 		{
 			path: "/choosePicture",
