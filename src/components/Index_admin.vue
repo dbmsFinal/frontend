@@ -4,8 +4,8 @@
         <div class="topbar-text">VoteSystem</div>
     </div>
     <div class="top-section">
-        <el-button class="create-button" type="info" @click="turnToCreatePage()">create_poll</el-button>
-        <el-button class="fixed-button" type="info">Hello AAA{{ this.username }}</el-button>
+        
+        <el-button class="fixed-button" type="info" @click="turnToUserPage()">user page</el-button>
     </div>
     <div class="banner">
         <div class="banner-text">
@@ -21,10 +21,10 @@
     <div v-for="(post, index) in posts" :key="index">
         <el-card class="card">
             <div class="card-content">
-                <a class="card-title">title:{{ post.title }}</a>
+                <a class="card-title">{{ post.title }}</a>
                 <!-- chage row -->
                 <br>
-                <el-text class="mx-1" size="large">description: {{ post.description }}  </el-text>
+                
                 <div class="card-author">By {{ post.creator_id}}</div>
                 
             </div>
@@ -42,7 +42,7 @@
             <div class="card-content">
                 <a class="card-title">{{ post.title }}</a>
                 <br>
-                <el-text class="mx-1" size="large">description: {{ post.description }}  </el-text>
+                
                 <div class="card-author">By {{ post.creator_id}}</div>
             </div>
             <el-button @click="judge(post.poll_id, 0)" type="warning">disappove</el-button>
@@ -162,7 +162,10 @@ export default {
         },
         turnToCreatePage() {
             router.push("/createPoll")
-        }
+        },
+        turnToUserPage() {
+            router.push("/userList")
+        },
     },
 };
 </script>

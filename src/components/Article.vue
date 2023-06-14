@@ -117,6 +117,13 @@ export default {
                     console.log(response.data.message.questions)
                     vm.posts = response.data.message.questions;
 
+                    // if text == "" then remove
+                    for (let i = 0; i < vm.posts.length; i++) {
+                        if (vm.posts[i].text == "") {
+                            vm.posts.splice(i, 1);
+                        }
+                    }
+                    
                 })
                 .catch((error) => {
                     console.log(error);
@@ -237,6 +244,7 @@ export default {
                     router.push("/index");
 
                 })
+                console.log(data)
                 .catch((error) => {
                     console.log(error);
                     this.$message.error("you have voted");

@@ -44,12 +44,11 @@ const router = createRouter({
 			name: "error",
 			component: () => import("../components/ErrorUserName.vue"),
 		},
-		//
-		//   path: '/article:title',
-		//   name: 'article',
-		//   component: () => import('../components/Article.vue'),
-
-		// },
+		{
+			path: "/resetPassword",
+			name: "resetPassword",
+			component: () => import("../components/resetPassword.vue"),
+		},
 		{
 			path: "/article/:postid",
 			name: "Article",

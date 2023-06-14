@@ -5,7 +5,7 @@
     </div>
     <div class="top-section">
         <el-button class="create-button" type="info" @click="turnToCreatePage()">create_poll</el-button>
-        <el-button class="fixed-button" type="info">Hello AAA{{ this.username }}</el-button>
+        <el-button class="fixed-button" type="info"  @click="turnToResetPassword()">ResetPassword</el-button>
     </div>
     <div class="banner">
         <div class="banner-text">
@@ -108,7 +108,10 @@ export default {
         },
         turnToCreatePage() {
             router.push("/createPoll")
-        }
+        },
+        turnToResetPassword() {
+            router.push("/resetPassword")
+        },
     },
 };
 </script>
