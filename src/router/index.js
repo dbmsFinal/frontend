@@ -24,7 +24,11 @@ const router = createRouter({
 			name: "signUp",
 			component: () => import("../components/SignUp.vue"),
 		},
-
+		{
+			path: "/userList",
+			name: "userList",
+			component: () => import("../components/UserList.vue"),
+		},
 		{
 			path: "/index",
 			name: "index",
@@ -35,7 +39,6 @@ const router = createRouter({
 			name: "index_admin",
 			component: () => import("../components/Index_admin.vue"),
 		},
-
 		{
 			path: "/errorUserName",
 			name: "error",
